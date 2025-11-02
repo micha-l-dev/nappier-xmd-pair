@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAPPIER-XMD PAIR SESSION</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ==== GENERAL ==== */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #0a0a0a 40%, #000 100%);
+      color: #00ff99;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ==== MATRIX BACKGROUND ANIMATION ==== */
+    canvas#matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+    }
+
+    /* ==== CONTAINER ==== */
+    .container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 2rem;
+      border: 1px solid #00ff99;
+      border-radius: 15px;
+      box-shadow: 0 0 25px #00ff99;
+      width: 90%;
+      max-width: 350px;
+      backdrop-filter: blur(3px);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #00ff99;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px #00ff99;
+    }
+
+    h6 {
+      color: #b3ffcc;
+      font-weight: normal;
+      margin-top: 0;
+    }
+
+    /* ==== INPUT BOX ==== */
+    .input-container {
+      display: flex;
+      margin-top: 1.5rem;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #001a0f;
+    }
+
+    .input-container input {
+      flex: 1;
+      padding: 0.8rem;
+      background: transparent;
+      border: none;
+      color: #00ff99;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .input-container input::placeholder {
+      color: #00ff99a6;
+    }
+
+    .input-container button {
+      background: #00ff99;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .input-container button:hover {
+      background: #39ff14;
+      color: black;
+      box-shadow: 0 0 15px #00ff99;
+    }
+
+    #pair {
+      margin-top: 1.5rem;
+      color: #00ff99;
+      font-size: 1rem;
+    }
+
+    #copy {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    #copy:hover {
+      color: #39ff14;
+      text-shadow: 0 0 10px #00ff99;
+    }
+
+    /* ==== FOOTER ==== */
+    .glow-footer {
+      color: #00ff99;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px #00ff99;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #00ff99; }
+      to { text-shadow: 0 0 20px #39ff14; }
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+
+  <div class="container">
+    <h2>NAPPIER-XMD</h2>
+    <h6>⚙ Enter your number with country code ⚙</h6>
+
+    <div class="input-container">
+      <input id="number" type="number" placeholder="2547147XXXX" />
+      <button id="submit">Enter</button>
+    </div>
+
+    <div id="pair"></div>
+    <div class="glow-footer">Powered by KATHARA ⚡</div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+  <script>
+    /* === MATRIX BACKGROUND EFFECT === */
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ff99";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+          drops[i] = 0;
+
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 35);
+
+    /* === SESSION CODE LOGIC === */
+    const a = document.getElementById("pair");
+    const b = document.getElementById("submit");
+    const c = document.getElementById("number");
+
+    async function Copy() {
+      const text = document.getElementById("copy").innerText;
+      const code = text.replace("CODE: ", "");
+      await navigator.clipboard.writeText(code);
+      document.getElementById("copy").innerText = "✔ COPIED";
+      setTimeout(() => (document.getElementById("copy").innerText = text), 1000);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const num = c.value.replace(/[^0-9]/g, "");
+
+      if (!num) {
+        a.innerHTML = "<b style='color:red'>❗ Enter your number ❗</b>";
+        return;
+      }
+      if (num.length < 11) {
+        a.innerHTML = "<b style='color:red'>❌ Invalid number format ❌</b>";
+        return;
+      }
+
+      a.innerHTML = "<b>🔎 Please wait...</b>";
+      try {
+        const { data } = await axios(`/code?number=${num}`);
+        const code = data.code || "Service Unavailable";
+        a.innerHTML = `<font id="copy" onclick="Copy()" style="color:#00ff99;font-weight:bold;cursor:pointer;">CODE: <span style="color:#fff;">${code}</span></font>`;
+      } catch {
+        a.innerHTML = "<b style='color:red'>⚠ Error fetching code ⚠</b>";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAPPIER-XMD | Session Generator</title>
+  <link rel="shortcut icon" href="https://files.catbox.moe/25lh7r.png" type="image/x-icon">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #000000 0%, #0a0a0a 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h3 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #00ff88, #00aaff, #ff003c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glowText 4s infinite alternate;
+      margin-bottom: 40px;
+    }
+
+    @keyframes glowText {
+      0% { text-shadow: 0 0 10px #00ff88; }
+      50% { text-shadow: 0 0 20px #00aaff; }
+      100% { text-shadow: 0 0 25px #ff003c; }
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .button {
+      position: relative;
+      width: 220px;
+      height: 50px;
+      color: #fff;
+      background: linear-gradient(135deg, #111, #1c1c1c);
+      border: 2px solid #00ff99;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-decoration: none;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      background: linear-gradient(90deg, #00ff88, #00aaff, #ff003c, #00ff88);
+      background-size: 400%;
+      z-index: -1;
+      filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 12px;
+      animation: neon 6s linear infinite;
+    }
+
+    @keyframes neon {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 400% 0%; }
+    }
+
+    .button:hover::before {
+      opacity: 1;
+    }
+
+    .button:hover {
+      transform: scale(1.08);
+      border-color: transparent;
+      color: #00ffcc;
+      background: linear-gradient(135deg, #1c1c1c, #000);
+    }
+
+    /* Music Section */
+    .music-section {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .music-section h4 {
+      color: #00ffcc;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .music-section input {
+      width: 80%;
+      max-width: 300px;
+      padding: 12px;
+      border: 2px solid #00ff99;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      outline: none;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .music-section input:focus {
+      box-shadow: 0 0 15px #00ff99;
+    }
+
+    .music-section button {
+      margin-top: 15px;
+      background: #00ff99;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.3s ease;
+    }
+
+    .music-section button:hover {
+      transform: scale(1.05);
+      background: #00ffaa;
+    }
+
+    p {
+      margin-top: 40px;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.85);
+      color: #00ff88;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 14px;
+      border-top: 1px solid #00ff88;
+      letter-spacing: 1px;
+    }
+
+    footer span {
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      h3 { font-size: 2rem; }
+      .button { width: 180px; height: 45px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h3>⚡ NAPPIER-XMD ⚡</h3>
+
+  <div class="button-container">
+    <a href="/qr" class="button" target="_blank">QR-CODE</a>
+    <a href="/pair" class="button" target="_blank">PAIRING-CODE</a>
+    <a href="https://github.com/micha-l-dev/NAPPIER-XMD/fork" class="button" target="_blank">FORK BOT</a>
+    <a href="https://whatsapp.com/channel/0029Vb7PDezLdQefWzPPIq1Z" class="button" target="_blank">WHATSAPP</a>
+  </div>
+
+  <div class="music-section">
+    <h4>🎵 Input Music URL</h4>
+    <input type="https://files.catbox.moe/ycr5ui.m4a">
+    <br>
+    <button onclick="playMusic()">Play</button>
+  </div>
+
+  <p>Facing an issue? Tap the button below ⤵️</p>
+  <a href="https://wa.me/254116141363" class="button" target="_blank">REPORT ERROR</a>
+
+  <footer>
+    ⚙️kathara &copy; <span id="currentYear"></span> | Powered by <span>kathara</span>
+  </footer>
+
+  <script>
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+    function playMusic() {
+      const url = document.getElementById("musicUrl").value;
+      if (url) {
+        window.open(url, "_blank");
+      } else {
+        alert("Please enter a valid music URL.");
+      }
+    }
+  </script>
+
+</body>
+</html>
